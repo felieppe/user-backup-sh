@@ -25,7 +25,7 @@ if ! getent passwd $uw > /dev/null 2>&1; then
 	if sudo useradd $uw; then
 		echo "User ${uw} created succesfully."
 	else
-		echo "Error ocurred in process of creating ${uw} group."
+		echo "Error occurred in process of creating ${uw} group."
 	fi
 else
 	echo "[*] Skipping creating user because is already created."
@@ -41,6 +41,15 @@ echo "[**] Changing permissions for executing ${backup_script} with sudo..."
 
 echo "${uw} ALL=(root) NOPASSWD: ${backup_script}" > /etc/sudoers.d/"${uw}"
 sudo chmod 0440 /etc/sudoers.d/"${uw}"
+
+# /backup folder existence check
+if [ ! -d "/backup" ]; then
+	if sudo mkdir "/backup"; then
+		echo "Backup folder created successfully."
+	else
+		echo "Error occurred in process of creating /backup folder."
+	fi
+fi
 
 echo "\n"
 
